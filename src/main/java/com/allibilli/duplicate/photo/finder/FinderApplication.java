@@ -26,7 +26,7 @@ public class FinderApplication {
 
         String readDir = "J:\\New";
 
-        String duplicateDir = "G:\\Photos\\duplicatePhotos";
+        String duplicateDir = "H:\\Duplicates\\duplicatePhotos";
         String regularDir = "G:\\Photos\\regularPhotos";
         String movies = "G:\\Movies";
 

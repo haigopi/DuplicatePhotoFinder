@@ -3,6 +3,7 @@ package com.allibilli.duplicate.photo.finder;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.stereotype.Component;
 
@@ -10,6 +11,8 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.attribute.FileTime;
+import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
@@ -33,7 +36,7 @@ public class ReadPhotosFrom {
         int count = 0;
         int duplicatesCount = 0;
         for (File ef : allFiles) {
-
+            ++totalCount;
             if (ef.isDirectory() && toIncludeSubDirs) {
                 log.info("Directory found : {} ", ef.getAbsolutePath(), " Now processing...this ");
                 startReading(ef);
@@ -44,7 +47,7 @@ public class ReadPhotosFrom {
                 continue;
             }
 
-            if (ef.getName().endsWith("db") || ef.getName().endsWith("jar") || ef.getName().contains(" - Copy") || ef.getName().contains(".ini")) {
+            if (ef.getName().endsWith("db") || ef.getName().endsWith("jar") || ef.getName().contains(" - Copy") || ef.getName().contains(".ini") || ef.getName().contains(".@__thumb")) {
                 log.info("Deleting : {}", ef.getName());
                 ef.delete();
                 continue;
@@ -66,16 +69,26 @@ public class ReadPhotosFrom {
                     && Files.getLastModifiedTime(path).to(TimeUnit.MILLISECONDS) == time) {
                 log.info("{}/{} ] Duplicate: {} - {}", duplicatesCount, allFiles.length, ef.getCanonicalPath(), Files.getLastModifiedTime(path));
 
-                //duplicates.saveFile(ef);
+                FileTime fileTime = Files.getLastModifiedTime(path);
 
-                ef.delete();
+                Calendar calendar = Calendar.getInstance();
+                calendar.set(Calendar.YEAR, 2018);
+                calendar.set(Calendar.MONTH, 1);
+                calendar.set(Calendar.DAY_OF_MONTH, 1);
+
+                if(calendar.getTimeInMillis() > fileTime.toMillis()) {
+                    log.info("Deleting File: {}", ef.getAbsolutePath());
+                    log.info("Deleting File Date: {} - {} : {} - {}", fileTime, fileTime.toMillis(), calendar.getTime(), calendar.getTimeInMillis());
+                    //ef.delete();
+                    duplicates.saveFile(ef);
+                }
                 ++duplicatesCount;
-            } else if (Files.exists(path) && Files.size(path) != size &&  Files.getLastModifiedTime(path).to(TimeUnit.MILLISECONDS) != time) {
-                log.info("{}/{} ] Duplicate Name wih different file: {}", duplicatesCount, allFiles.length, ef.getCanonicalPath());
-                String ext = "JPG";
-                String newName = String.format("%s.%s", RandomStringUtils.randomAlphanumeric(8), ext);
-                File intermediate=new File(newName);
+            } else if (Files.exists(path) && Files.size(path) != size && Files.getLastModifiedTime(path).to(TimeUnit.MILLISECONDS) != time) {
+                String ext = FilenameUtils.getExtension(ef.getName());
+                String newName = String.format("%s_%s.%s", Files.getLastModifiedTime(path).toMillis(), RandomStringUtils.randomAlphanumeric(8), ext);
+                File intermediate = new File("renamed_"+newName);
                 ef.renameTo(intermediate);
+                log.info("{}/{} ] Duplicate Name wih different file: {} - {}", duplicatesCount, allFiles.length, ef.getCanonicalPath(), newName);
                 regular.saveFile(intermediate);
             } else if (Files.notExists(path) && !ef.getName().endsWith("MOV")) {
                 log.info("{}/{} ] Not a duplicate : {} ", count, allFiles.length, ef.getCanonicalPath());
