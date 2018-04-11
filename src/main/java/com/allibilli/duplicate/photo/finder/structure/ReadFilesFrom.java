@@ -93,21 +93,23 @@ public class ReadFilesFrom extends SaveFile {
         String fileName = ef.getName();
         long fileCreatedTime = ef.lastModified();
 
-        Path path = getDuplicateFilePath(fileName);
+        Path path = getPath(fileName);
         if (Files.exists(path)
                 && Files.size(path) == fileSize
                 && Files.getLastModifiedTime(path).to(TimeUnit.MILLISECONDS) == fileCreatedTime) {
+            totalDuplicateCount++;
             log.info("Duplicate Count: {} - {} - {}", totalDuplicateCount, ef.getCanonicalPath(), Files.getLastModifiedTime(path));
             //FileUtils.copyFileToDirectory(ef, path.toFile(), true);
+            path = getDuplicateFilePath(fileName);
             saveFile(ef, path);
-            totalDuplicateCount++;
+
             return true;
         }
         return false;
     }
 
     private void saveFile(File ef, Path path) throws Exception {
-        if(ef.isDirectory()){
+        if (ef.isDirectory()) {
             log.info("Not Moving {} -> {}", ef.getAbsolutePath(), path);
             return;
         }
