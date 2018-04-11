@@ -1,0 +1,7 @@
+paths:
+  imagePath:  G:\\Photos\\regularPhotos
+  duplicateDirPath: H:\\Duplicates\\duplicatePhotos
+  sourcePath: J:\\New
+  moviePath: G:\\Movies
+  miscPath: G:\\misc
+  includeSubDirs: true
