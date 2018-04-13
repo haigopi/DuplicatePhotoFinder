@@ -6,3 +6,5 @@ Run gradle bootRun or Run the FinderApplication.java file
 Thsi application will not remove any of your files but will be consolidated the files into an another folder or drive.
 
 This was build for personal use. distribute/contribute as needed at your own risk. 
+<br>
+Give a like! Thanks.
