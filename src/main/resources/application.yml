@@ -1,7 +1,8 @@
 paths:
   imagePath:  G:\\Photos\\regularPhotos
   duplicateDirPath: H:\\Duplicates\\duplicatePhotos
-  sourcePath: J:\\New
+  sourcePath: J:\\Photos
   moviePath: G:\\Movies
   miscPath: G:\\misc
   includeSubDirs: true
+  groupPath: G:\\Photos\\regularPhotos

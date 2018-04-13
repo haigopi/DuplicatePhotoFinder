@@ -89,6 +89,10 @@ public class ReadFilesFrom extends SaveFile {
     }
 
     private boolean processDuplicate(File ef) throws Exception {
+
+        if(!ef.exists()){
+            return false;
+        }
         long fileSize = FileUtils.sizeOf(ef);
         String fileName = ef.getName();
         long fileCreatedTime = ef.lastModified();
@@ -114,7 +118,6 @@ public class ReadFilesFrom extends SaveFile {
             return;
         }
         log.info("Moving {} -> {}", ef.getAbsolutePath(), path);
-        //FileUtils.copyFileToDirectory(ef, path.toFile(), true);
         FileUtils.copyFile(ef, path.toFile(), true);
     }
 
@@ -123,6 +126,7 @@ public class ReadFilesFrom extends SaveFile {
         if (ef.getName().endsWith("db") || ef.getName().endsWith("jar") || ef.getName().contains(" - Copy") || ef.getName().contains(".ini") || ef.getName().equalsIgnoreCase(".@__thumb")) {
             log.info("Deleting : {}", ef.getName());
             ef.delete();
+            return;
         }
 
         if (ef.isDirectory()) {

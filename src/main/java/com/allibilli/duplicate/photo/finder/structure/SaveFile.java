@@ -58,6 +58,10 @@ public abstract class SaveFile {
     @Value("${paths.duplicateDirPath}")
     public String duplicateDirPath;
 
+
+    @Value("${paths.groupPath}")
+    public String groupPath;
+
     @Value("${paths.sourcePath}")
     public String sourcePath;
 
@@ -73,6 +77,7 @@ public abstract class SaveFile {
     public File imagePathFile;
     public File duplicateDirPathFile;
     public File sourcePathFile;
+    public File groupFilesPath;
     public File miscPathFile;
     public File moviePathFile;
 
@@ -84,7 +89,7 @@ public abstract class SaveFile {
         sourcePathFile = new File(sourcePath);
         miscPathFile = new File(miscPath);
         moviePathFile = new File(moviePath);
-
+        groupFilesPath = new File(groupPath);
         if (!Objects.isNull(imagePathFile) && !imagePathFile.exists()) {
             imagePathFile.mkdir();
         }
