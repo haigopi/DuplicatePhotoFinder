@@ -1,4 +1,3 @@
-[![N|Solid](http://allibilli.com/coloredallibilli.jpg)](http://allibilli.com)  
 
 # DuplicatePhotoFinder
 Find the duplicate pictures and group them by modified/created date - Risk at your own. 
@@ -10,3 +9,5 @@ Clone the app and modify the application.yml to provide the paths to read the fi
 This was build for personal use. distribute/contribute as needed at your own risk. 
 <br>
 Give a like! Thanks.
+
+[![N|Solid](http://allibilli.com/coloredallibilli.jpg)](http://allibilli.com)  
