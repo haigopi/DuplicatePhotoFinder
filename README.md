@@ -1,3 +1,5 @@
+[![N|Solid](http://allibilli.com/coloredallibilli.jpg)](http://allibilli.com)  
+
 # DuplicatePhotoFinder
 Find the duplicate pictures and group them by modified/created date - Risk at your own. 
 # How to run?
